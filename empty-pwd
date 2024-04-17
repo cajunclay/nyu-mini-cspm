@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ssh_users="$(cat /etc/passwd | grep '/bin/bash' | awk -F: '{print $1}')"
+
+for user in $ssh_users ;
+
+do
+
+	pwd_check="$(sudo passwd --status $user | awk '{print $2}')"
+
+	if [ $pwd_check == 'NP' ] ; then
+		echo -e "$user has an empty password!\n"
+		password=$(tr -dc 'A-Za-z0-9!?%=' < /dev/urandom | head -c 15)
+		echo -e "Setting a new password to...$password"
+		echo -e "'$password'\n'$password'" | sudo passwd $user
+
+	fi
+
+done
