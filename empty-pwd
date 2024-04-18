@@ -20,9 +20,9 @@ do
                 password=$(tr -dc 'A-Za-z0-9!?%=' < /dev/urandom | head -c 15)
                 echo -e "Setting a new password..."
                 sudo usermod --password $(echo $password | openssl passwd -1 -stdin) $user
-				echo -e "Sending password to AWS Secrets Manager..."
-				epoch_time=$(date +%s)
-				aws secretsmanager create-secret --name $user"_password_"$epoch_time --description "Account password created automatically via empty password script." --secret-string "$password"
+		echo -e "Sending password to AWS Secrets Manager..."
+		epoch_time=$(date +%s)
+		aws secretsmanager create-secret --name $user"_password_"$epoch_time --description "Account password created automatically via empty password script." --secret-string "$password"
         fi
 
 done
