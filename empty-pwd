@@ -23,6 +23,7 @@ do
 		echo -e "Sending password to AWS Secrets Manager..."
 		epoch_time=$(date +%s)
 		aws secretsmanager create-secret --name $user"_password_"$epoch_time --description "Account password created automatically via empty password script." --secret-string "$password"
+		aws ssm create-ops-item --title "Privileged User With Empty Password" --description "The privileged user: "$user" was found with an empty password. A complex password was automatically set and stored in Secrets Manager." --source ec2 --severity 1
         fi
 
 done
